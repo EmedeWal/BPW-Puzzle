@@ -3,6 +3,11 @@ using System.Collections;
 
 public class DoorSystem : MonoBehaviour
 {
+    // Variables to control when the door opens.
+    private int required = 0;
+    private int progress = 0;
+
+    // Variables for door movement.
     private float offset = 10f;
     private float moveDelay = 0.01f;
     private float moveAmount = 0.1f;
@@ -15,42 +20,42 @@ public class DoorSystem : MonoBehaviour
     private void Awake()
     {
         // Set the defaultPos to the current position of the gameObject in the scene. 
-        defaultPos = base.transform.position;
-        Debug.Log(defaultPos);
+        defaultPos = transform.position;
     }
 
     private void Start()
     {
         // Set the newPos equal to defaultPos + the offset on the yAxis.
         newPos = defaultPos + new Vector3(0, offset, 0);
-        Debug.Log(newPos);
     }
 
-    private void Update()
+    // Functions for deciding when the door opens and closes.
+    public void SetRequired(int localRequired)
     {
-       if (Input.GetKeyDown(KeyCode.Return))
+        // Set the required progress equal to the amount of gameObjects that hold a reference to the door.
+        required += localRequired;
+    }
+
+    public void ProgressTracker(int localProgress)
+    {
+        // Increment the progress. 
+        progress += localProgress;
+
+        // If the progress is equal to the required amount of progress, open the door.
+        if (progress == required)
         {
-            Debug.Log("Open door is called");
-
-            // Check if there is a current Coroutine. If there is one active, stop it.
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-
-            // Start the correct Coroutine and assign it to currentCoroutine.
             currentCoroutine = StartCoroutine(OpenDoor());
         }
-
-       if (Input.GetKeyDown(KeyCode.Escape))
+        // Else, check if the door is at its default position. If not, close it.
+        else if (transform.position.y != defaultPos.y)
         {
-            Debug.Log("Close the door.");
-
-            // Check if there is a current Coroutine. If there is one active, stop it.
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-
-            // Start the correct Coroutine and assign it to currentCoroutine.
             currentCoroutine = StartCoroutine(CloseDoor());
         }
     }
 
+    // Functions for opening and closing the door.
     private IEnumerator OpenDoor()
     {
         // While the gameObject is lower than the desired position, move it up.
