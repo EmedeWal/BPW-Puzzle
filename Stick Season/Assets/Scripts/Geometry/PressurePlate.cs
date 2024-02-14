@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] private string pressureTag;
+    [SerializeField] private LayerMask collisionLayer;
     [SerializeField] private GameObject door;
 
     private DoorSystem ds;
@@ -21,8 +21,9 @@ public class PressurePlate : MonoBehaviour
     // If the pressure is triggered, increment the progress.
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(pressureTag))
+        if (collisionLayer == (collisionLayer | (1 << other.gameObject.layer)))
         {
+            Debug.Log("Entered pressure plate.");
             ds.ProgressTracker(1);
         }
     }
@@ -30,8 +31,9 @@ public class PressurePlate : MonoBehaviour
     // If the weight from the pressure plate is removed, remove progress.
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag(pressureTag))
+        if (collisionLayer == (collisionLayer | (1 << other.gameObject.layer)))
         {
+            Debug.Log("Exit pressure plate.");
             ds.ProgressTracker(-1);
         }
     }
