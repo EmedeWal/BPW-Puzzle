@@ -172,4 +172,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce1988969e651847b254064022560aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: Player
+  pressureTag: Player
+  door: {fileID: 0}
