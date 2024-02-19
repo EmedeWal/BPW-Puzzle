@@ -3,30 +3,42 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Camera playerCamera;
-
+    #region Movement Variables
     [Header("Movement Variables")]
     [SerializeField] private float moveSpeed;
 
+    private CharacterController characterController;
+
+    private Vector3 moveDir;
+
+    //[HideInInspector] public bool canMove = true;
+    #endregion
+
+    #region Camera Variables
     [Header("Camera Variables")]
+    [SerializeField] Camera playerCamera;
     [SerializeField] private float lookSpeed;
     [SerializeField] private float lookXLimit;
 
-    [HideInInspector] public bool canMove = true;
-
     private float rotationX = 0f;
+    #endregion
 
-    private Vector3 moveDir;
-    private float xMove;
-    private float zMove;
+    #region Stick Variables
+    [Header("Stick References")]
+    [SerializeField] private KeyCode interaction;
+    [SerializeField] private GameObject stickGFX;
+    [SerializeField] private GameObject stickPrefab;
+    [SerializeField] private Transform spawnPoint;
 
-    private CharacterController characterController;
-    private Rigidbody rb;
+    [HideInInspector] public bool inRangeOfStick;
+
+    private bool holdingStick = true;
+
+    #endregion
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -37,15 +49,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        MyInput();
         Movement();
         RotateCamera();
-    }
 
-    private void MyInput()
-    {
-        xMove = Input.GetAxisRaw("Horizontal");
-        zMove = Input.GetAxisRaw("Vertical");
+        StickInput();
     }
 
     private void Movement()
@@ -62,12 +69,44 @@ public class PlayerController : MonoBehaviour
 
     private void RotateCamera()
     {
-        if (canMove)
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+    }
+
+    private void StickInput()
+    {
+        if (!Input.GetKeyDown(interaction))
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            return;
         }
+
+        if (holdingStick)
+        {
+            DropStick();
+        }
+        else if (inRangeOfStick)
+        {
+            RetrieveStick();
+        }
+
+    }
+
+    private void DropStick()
+    {
+        Debug.Log("The stick was dropped");
+
+        holdingStick = false;
+        stickGFX.SetActive(false);
+        Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
+    }
+
+    private void RetrieveStick()
+    {
+        Debug.Log("The stick was retrieved");
+
+        holdingStick = true;
+        stickGFX.SetActive(true);
     }
 }

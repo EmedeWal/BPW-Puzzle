@@ -1,0 +1,26 @@
+using UnityEngine;
+
+public class StickLogic : MonoBehaviour
+{
+    private PlayerController playerController;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player has entered the stick area");
+            playerController = other.GetComponent<PlayerController>();
+            playerController.inRangeOfStick = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player has left the stick area");
+            playerController = other.GetComponent<PlayerController>();
+            playerController.inRangeOfStick = false;
+        }
+    }
+}
