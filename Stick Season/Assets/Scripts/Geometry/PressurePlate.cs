@@ -2,39 +2,53 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] private LayerMask collisionLayer;
-    [SerializeField] private GameObject door;
+    [SerializeField] private LayerMask heavyEnough;
+    [SerializeField] private Vector3 boxSize;
+    [SerializeField] private float castFrequency;
 
-    private DoorSystem ds;
+    [HideInInspector] public bool isTriggered;
 
-    private void Awake()
+    private float timeSinceLastCast;
+
+    private void Update()
     {
-        ds = door.GetComponent<DoorSystem>();
-    }
+        // Increment timeSinceLastCast
+        timeSinceLastCast += Time.deltaTime;
 
-    private void Start()
-    {
-        // Set the required amount of progress for the door to +1. 
-        ds.SetRequired(1);
-    }
-
-    // If the pressure is triggered, increment the progress.
-    private void OnTriggerEnter(Collider other)
-    {
-        if (collisionLayer == (collisionLayer | (1 << other.gameObject.layer)))
+        // Check if it's time to cast the box again
+        if (timeSinceLastCast >= 1f / castFrequency)
         {
-            Debug.Log("Entered pressure plate.");
-            ds.ProgressTracker(1);
+            // Reset timeSinceLastCast
+            timeSinceLastCast = 0f;
+
+            // Cast the box
+            CastBox();
         }
     }
 
-    // If the weight from the pressure plate is removed, remove progress.
-    private void OnTriggerExit(Collider other)
+    private void CastBox()
     {
-        if (collisionLayer == (collisionLayer | (1 << other.gameObject.layer)))
+        // Collect layers of all colliders detected within the box
+        Collider[] colliders = Physics.OverlapBox(transform.position, boxSize / 2f, Quaternion.identity);
+
+        // Display the layers of all detected colliders
+        foreach (Collider collider in colliders)
         {
-            Debug.Log("Exit pressure plate.");
-            ds.ProgressTracker(-1);
+            if (heavyEnough == (heavyEnough | (1 << collider.gameObject.layer)))
+            {
+                isTriggered = true;
+            }
+            else
+            {
+                isTriggered = false;
+            }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Draw wireframe box gizmo
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, boxSize);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform spawnPoint;
 
+    [HideInInspector] public GameObject stickToDestroy;
     [HideInInspector] public bool inRangeOfStick;
 
     private bool holdingStick = true;
@@ -108,5 +110,6 @@ public class PlayerController : MonoBehaviour
 
         holdingStick = true;
         stickGFX.SetActive(true);
+        Destroy(stickToDestroy); 
     }
 }

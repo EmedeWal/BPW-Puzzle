@@ -3,9 +3,10 @@ using System.Collections;
 
 public class DoorSystem : MonoBehaviour
 {
+    [SerializeField] private PressurePlate[] pressurePlates;
+
     // Variables to control when the door opens.
-    private int required = 0;
-    private int progress = 0;
+    public int progress = 0;
 
     // Variables for door movement.
     private float offset = 10f;
@@ -29,26 +30,32 @@ public class DoorSystem : MonoBehaviour
         newPos = defaultPos + new Vector3(0, offset, 0);
     }
 
-    // Functions for deciding when the door opens and closes.
-    public void SetRequired(int localRequired)
+    private void Update()
     {
-        // Set the required progress equal to the amount of gameObjects that hold a reference to the door.
-        required += localRequired;
+        foreach (PressurePlate plate in pressurePlates) 
+        { 
+            if (plate.isTriggered)
+            {
+                progress++;
+
+                if (progress >= pressurePlates.Length)
+                {
+                    Debug.Log("Manager was called");
+
+                    Manager();
+                }
+            }
+        }
     }
 
-    public void ProgressTracker(int localProgress)
+    public void Manager()
     {
-        // Increment the progress. 
-        progress += localProgress;
+        // Open the door.
+        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+        currentCoroutine = StartCoroutine(OpenDoor());
 
-        // If the progress is equal to the required amount of progress, open the door.
-        if (progress == required)
-        {
-            if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-            currentCoroutine = StartCoroutine(OpenDoor());
-        }
         // Else, check if the door is at its default position. If not, close it.
-        else if (transform.position.y != defaultPos.y)
+        if (transform.position.y != defaultPos.y)
         {
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(CloseDoor());
