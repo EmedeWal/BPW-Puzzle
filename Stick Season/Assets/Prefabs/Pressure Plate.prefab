@@ -92,8 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7281310127984512824}
-  - component: {fileID: 3748624551249949165}
-  - component: {fileID: 1387750902743077896}
+  - component: {fileID: 6983619172877375038}
   - component: {fileID: 8103189479211964636}
   m_Layer: 0
   m_Name: Pressure Plate
@@ -118,7 +117,7 @@ Transform:
   - {fileID: 8458556943492217009}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3748624551249949165
+--- !u!65 &6983619172877375038
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,27 +138,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &1387750902743077896
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3334060149036500480}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 3, z: 1}
-  m_Center: {x: 0, y: 2, z: 0}
 --- !u!114 &8103189479211964636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce1988969e651847b254064022560aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionLayer:
+  heavyEnough:
     serializedVersion: 2
     m_Bits: 3072
+  boxSize: {x: 5, y: 1, z: 5}
+  castFrequency: 5
   isTriggered: 0

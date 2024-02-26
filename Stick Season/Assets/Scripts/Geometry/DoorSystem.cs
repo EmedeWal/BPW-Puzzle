@@ -5,8 +5,8 @@ public class DoorSystem : MonoBehaviour
 {
     [SerializeField] private PressurePlate[] pressurePlates;
 
-    // Variables to control when the door opens.
-    public int progress = 0;
+    // Variables to track whether the door should open or not.
+    [HideInInspector] public int counter = 0;
 
     // Variables for door movement.
     private float offset = 10f;
@@ -14,6 +14,7 @@ public class DoorSystem : MonoBehaviour
     private float moveAmount = 0.1f;
 
     private Coroutine currentCoroutine;
+    private string currentCoroutineName;
 
     private Vector3 defaultPos;
     private Vector3 newPos;
@@ -36,35 +37,36 @@ public class DoorSystem : MonoBehaviour
         { 
             if (plate.isTriggered)
             {
-                progress++;
-
-                if (progress >= pressurePlates.Length)
-                {
-                    Debug.Log("Manager was called");
-
-                    Manager();
-                }
+                // For every pressurePlate that isTriggered, increase the counter.
+                counter++;
             }
         }
+
+        Manager();
     }
 
-    public void Manager()
+    private void Manager()
     {
-        // Open the door.
-        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-        currentCoroutine = StartCoroutine(OpenDoor());
-
-        // Else, check if the door is at its default position. If not, close it.
-        if (transform.position.y != defaultPos.y)
+        // If the counter is equal to the amount of plates and the coroutine has not been started yet, open the door.
+        if (counter == pressurePlates.Length && currentCoroutineName != "Open Door")
+        {
+            if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+            currentCoroutine = StartCoroutine(OpenDoor());
+        }
+        else if (counter != pressurePlates.Length && currentCoroutineName != "Close Door")
         {
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(CloseDoor());
         }
+
+        counter = 0;
     }
 
     // Functions for opening and closing the door.
     private IEnumerator OpenDoor()
     {
+        currentCoroutineName = "Open Door";
+
         // While the gameObject is lower than the desired position, move it up.
         while (transform.position.y < newPos.y)
         {
@@ -79,6 +81,8 @@ public class DoorSystem : MonoBehaviour
 
     private IEnumerator CloseDoor()
     {
+        currentCoroutineName = "Close Door";
+
         // While the gameObject is higher than the desired position, move it down.
         while (transform.position.y > defaultPos.y)
         {
