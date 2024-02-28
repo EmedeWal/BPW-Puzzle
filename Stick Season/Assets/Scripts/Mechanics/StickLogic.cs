@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class StickLogic : MonoBehaviour
 {
+
     private PlayerController playerController;
 
     private void OnTriggerEnter(Collider other)
@@ -10,8 +11,9 @@ public class StickLogic : MonoBehaviour
         {
             Debug.Log("Player has entered the stick area");
             playerController = other.GetComponent<PlayerController>();
-            playerController.inRangeOfStick = true;
             playerController.stickToDestroy = gameObject;
+            playerController.inRangeOfStick = true;
+            playerController.prompt.SetActive(true);
         }
     }
 
@@ -22,6 +24,15 @@ public class StickLogic : MonoBehaviour
             Debug.Log("Player has left the stick area");
             playerController = other.GetComponent<PlayerController>();
             playerController.inRangeOfStick = false;
+            playerController.prompt.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (playerController.prompt.activeSelf)
+        {
+            playerController.prompt.SetActive(false);
         }
     }
 }

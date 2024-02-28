@@ -10,11 +10,11 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Variables")]
     [SerializeField] private float moveSpeed;
 
+    [HideInInspector] public bool canMove = true;
+
     private CharacterController characterController;
 
     private Vector3 moveDir;
-
-    //[HideInInspector] public bool canMove = true;
     #endregion
 
     #region Camera Variables
@@ -33,10 +33,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private TextMeshProUGUI stickTextUI;
-    [SerializeField] private int sticksInInventory;
 
     [HideInInspector] public GameObject stickToDestroy;
     [HideInInspector] public bool inRangeOfStick;
+
+    public GameObject prompt;
+
+    private int sticksInInventory = 0;
     #endregion
 
     private void Awake()
@@ -49,15 +52,20 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        prompt.SetActive(false);
+
         UpdateUI();
     }
 
     private void Update()
     {
-        Movement();
-        RotateCamera();
+        if (canMove)
+        {
+            Movement();
+            RotateCamera();
 
-        StickInput();
+            StickInput();
+        }
     }
 
     private void Movement()
@@ -137,39 +145,3 @@ public class PlayerController : MonoBehaviour
         stickTextUI.text = "Sticks: " + sticksInInventory;
     }
 }
-
-//private void StickInput()
-//{
-//    if (!Input.GetKeyDown(interaction))
-//    {
-//        return;
-//    }
-
-//    if (holdingStick)
-//    {
-//        DropStick();
-//    }
-//    else if (inRangeOfStick)
-//    {
-//        RetrieveStick();
-//    }
-
-//}
-
-//private void DropStick()
-//{
-//    Debug.Log("The stick was dropped");
-
-//    holdingStick = false;
-//    stickGFX.SetActive(false);
-//    Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
-//}
-
-//private void RetrieveStick()
-//{
-//    Debug.Log("The stick was retrieved");
-
-//    holdingStick = true;
-//    stickGFX.SetActive(true);
-//    Destroy(stickToDestroy);
-//}

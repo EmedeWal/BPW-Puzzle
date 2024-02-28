@@ -94,7 +94,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &547447726131386633
 BoxCollider:
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  canMove: 1
   playerCamera: {fileID: 2383580297569063301}
   lookSpeed: 3
   lookXLimit: 60
@@ -164,9 +165,9 @@ MonoBehaviour:
   stickPrefab: {fileID: 820082841662073848, guid: a2b816b4e058c9c43922a427c26c3362, type: 3}
   spawnPoint: {fileID: 4361821632993089093}
   stickTextUI: {fileID: 0}
-  sticksInInventory: 1
   stickToDestroy: {fileID: 0}
   inRangeOfStick: 0
+  prompt: {fileID: 0}
 --- !u!1 &4889600990417152538
 GameObject:
   m_ObjectHideFlags: 0
