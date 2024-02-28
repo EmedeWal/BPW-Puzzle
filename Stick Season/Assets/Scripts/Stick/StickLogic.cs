@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class StickLogic : MonoBehaviour
 {
-    [SerializeField] private float sphereRadius = 1f;
-
     private PlayerController playerController;
 
     private void OnTriggerEnter(Collider other)

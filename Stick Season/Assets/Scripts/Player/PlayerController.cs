@@ -1,5 +1,7 @@
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
+using UnityEditor.ShaderKeywordFilter;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -30,12 +32,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stickGFX;
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private TextMeshProUGUI stickTextUI;
+    [SerializeField] private int sticksInInventory;
 
     [HideInInspector] public GameObject stickToDestroy;
     [HideInInspector] public bool inRangeOfStick;
-
-    private bool holdingStick = true;
-
     #endregion
 
     private void Awake()
@@ -46,7 +47,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false; 
+        Cursor.visible = false;
+
+        UpdateUI();
     }
 
     private void Update()
@@ -84,32 +87,89 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (holdingStick)
+        if (inRangeOfStick)
+        {
+            inRangeOfStick = false;
+            RetrieveStick();
+        }
+        else if (sticksInInventory >= 1)
         {
             DropStick();
         }
-        else if (inRangeOfStick)
-        {
-            RetrieveStick();
-        }
-
     }
 
     private void DropStick()
     {
         Debug.Log("The stick was dropped");
 
-        holdingStick = false;
-        stickGFX.SetActive(false);
+        // The player loses a stick and spawns it in the world.
+        sticksInInventory--;
         Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
+
+        // If the player has no sticks left, disable stickGFX.
+        if (sticksInInventory == 0)
+        {
+            stickGFX.SetActive(false);
+        }
+
+        UpdateUI();
     }
 
     private void RetrieveStick()
     {
         Debug.Log("The stick was retrieved");
 
-        holdingStick = true;
-        stickGFX.SetActive(true);
-        Destroy(stickToDestroy); 
+        // The player gains a stick and removes it from the world.
+        sticksInInventory++;
+        Destroy(stickToDestroy);
+
+        // If the stickGFX is not active, set it active.
+        if (!stickGFX.activeSelf)
+        {
+            stickGFX.SetActive(true);
+        }
+
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        stickTextUI.text = "Sticks: " + sticksInInventory;
     }
 }
+
+//private void StickInput()
+//{
+//    if (!Input.GetKeyDown(interaction))
+//    {
+//        return;
+//    }
+
+//    if (holdingStick)
+//    {
+//        DropStick();
+//    }
+//    else if (inRangeOfStick)
+//    {
+//        RetrieveStick();
+//    }
+
+//}
+
+//private void DropStick()
+//{
+//    Debug.Log("The stick was dropped");
+
+//    holdingStick = false;
+//    stickGFX.SetActive(false);
+//    Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
+//}
+
+//private void RetrieveStick()
+//{
+//    Debug.Log("The stick was retrieved");
+
+//    holdingStick = true;
+//    stickGFX.SetActive(true);
+//    Destroy(stickToDestroy);
+//}

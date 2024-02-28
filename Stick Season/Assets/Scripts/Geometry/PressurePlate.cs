@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
+    [Header("Pressure Plate Variables")]
     [SerializeField] private LayerMask heavyEnough;
-    [SerializeField] private Vector3 boxSize;
-    [SerializeField] private float castFrequency;
+
+    [Header("Flame Pillar Reference")]
+    [SerializeField] private FlamePillar flamePillar;
 
     [HideInInspector] public bool isTriggered;
 
+    #region BoxCast Variables
+    private Vector3 boxSize = new Vector3(5, 1, 5);
     private float timeSinceLastCast;
+    private float castFrequency = 5;
+    #endregion
 
     private void Update()
     {
@@ -37,10 +43,12 @@ public class PressurePlate : MonoBehaviour
             if (heavyEnough == (heavyEnough | (1 << collider.gameObject.layer)))
             {
                 isTriggered = true;
+                flamePillar.LightFlame();
             }
             else
             {
                 isTriggered = false;
+                flamePillar.ExtinguishFlame();
             }
         }
     }

@@ -115,8 +115,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.2, y: 1.8, z: 1.2}
+  m_Center: {x: 0, y: -0.6, z: 0}
 --- !u!143 &298344978508728832
 CharacterController:
   m_ObjectHideFlags: 0
@@ -163,6 +163,8 @@ MonoBehaviour:
   stickGFX: {fileID: 1742047655018735490}
   stickPrefab: {fileID: 820082841662073848, guid: a2b816b4e058c9c43922a427c26c3362, type: 3}
   spawnPoint: {fileID: 4361821632993089093}
+  stickTextUI: {fileID: 0}
+  sticksInInventory: 1
   stickToDestroy: {fileID: 0}
   inRangeOfStick: 0
 --- !u!1 &4889600990417152538
