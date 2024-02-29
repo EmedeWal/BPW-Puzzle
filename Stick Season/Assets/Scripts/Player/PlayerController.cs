@@ -33,13 +33,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private TextMeshProUGUI stickTextUI;
+    [SerializeField] private int sticksInInventory = 0;
 
     [HideInInspector] public GameObject stickToDestroy;
     [HideInInspector] public bool inRangeOfStick;
 
     public GameObject prompt;
 
-    private int sticksInInventory = 0;
     #endregion
 
     private void Awake()
@@ -106,36 +106,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DropStick()
-    {
-        Debug.Log("The stick was dropped");
-
-        // The player loses a stick and spawns it in the world.
-        sticksInInventory--;
-        Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
-
-        // If the player has no sticks left, disable stickGFX.
-        if (sticksInInventory == 0)
-        {
-            stickGFX.SetActive(false);
-        }
-
-        UpdateUI();
-    }
-
     private void RetrieveStick()
     {
-        Debug.Log("The stick was retrieved");
-
         // The player gains a stick and removes it from the world.
         sticksInInventory++;
         Destroy(stickToDestroy);
 
         // If the stickGFX is not active, set it active.
-        if (!stickGFX.activeSelf)
-        {
-            stickGFX.SetActive(true);
-        }
+        if (!stickGFX.activeSelf) stickGFX.SetActive(true);
+        if (prompt.activeSelf) prompt.SetActive(false);
+        
+        UpdateUI();
+    }
+
+    private void DropStick()
+    {
+        // The player loses a stick and spawns it in the world.
+        sticksInInventory--;
+        Instantiate(stickPrefab, spawnPoint.position, spawnPoint.rotation);
+
+        // If the player has no sticks left, disable stickGFX.
+        if (sticksInInventory == 0) stickGFX.SetActive(false);
 
         UpdateUI();
     }

@@ -153,6 +153,8 @@ MonoBehaviour:
   heavyEnough:
     serializedVersion: 2
     m_Bits: 3072
-  boxSize: {x: 5, y: 1, z: 5}
+  flamePillar: {fileID: 0}
+  boxSize: {x: 5, y: 0.5, z: 5}
   castFrequency: 5
+  yOffset: 0.5
   isTriggered: 0
