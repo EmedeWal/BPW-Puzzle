@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TriggerDoor : MonoBehaviour
+public class Trigger : MonoBehaviour
 {
-    public UnityEvent triedDoor;
+    public UnityEvent trigger;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            triedDoor?.Invoke();
+            trigger?.Invoke();
         }
 
         Destroy(gameObject);

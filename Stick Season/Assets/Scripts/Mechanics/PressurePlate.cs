@@ -20,18 +20,23 @@ public class PressurePlate : MonoBehaviour
     private float timeSinceLastCast;
     #endregion
 
+    #region UI
     [Header("UI")]
     [SerializeField] private GameObject weightTemplate;
-    [SerializeField] private WeightUI weightUI;
     [SerializeField] private string weightType;
 
-    [Header("Flame Pillar Reference")]
-    [SerializeField] private FlamePillar flamePillar;
+    private WeightUI weightUI;
+    #endregion
+
+    [Header("Flame  Reference")]
+    [SerializeField] private GameObject flame;
 
     private void Awake()
     {
         // Calculate the center position of the box with the desired offset along the y-axis
         center = transform.position + new Vector3(0f, yOffset, 0f);
+
+        flame.SetActive(false);
 
         UpdateUI();
     }
@@ -73,12 +78,12 @@ public class PressurePlate : MonoBehaviour
         if (weight > 0)
         {
             isTriggered = true;
-            flamePillar.fire.SetActive(isTriggered);
+            flame.SetActive(isTriggered);
         }
         else
         {
             isTriggered = false;
-            flamePillar.fire.SetActive(isTriggered);
+            flame.SetActive(isTriggered);
         }
     }
 

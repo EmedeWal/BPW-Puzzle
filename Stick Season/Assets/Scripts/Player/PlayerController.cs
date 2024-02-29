@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool inRangeOfStick;
 
     public GameObject prompt;
-
     #endregion
 
     private void Awake()
@@ -134,5 +133,12 @@ public class PlayerController : MonoBehaviour
     private void UpdateUI()
     {
         stickTextUI.text = "Sticks: " + sticksInInventory;
+    }
+
+    public void AddSticks(int amount)
+    {
+        sticksInInventory += amount;
+
+        UpdateUI();
     }
 }
