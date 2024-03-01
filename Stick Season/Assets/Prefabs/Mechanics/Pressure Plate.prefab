@@ -152,9 +152,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heavyEnough:
     serializedVersion: 2
-    m_Bits: 3072
-  flamePillar: {fileID: 0}
-  boxSize: {x: 5, y: 0.5, z: 5}
+    m_Bits: 11264
+  isTriggered: 0
+  boxSize: {x: 3, y: 0.5, z: 3}
   castFrequency: 5
   yOffset: 0.5
-  isTriggered: 0
+  shouldKillSpider: 0
+  weightTemplate: {fileID: 3197731430075017069, guid: 19d61bbd7d98a3d4291063599f6d6826, type: 3}
+  weightType: light
+  flame: {fileID: 0}

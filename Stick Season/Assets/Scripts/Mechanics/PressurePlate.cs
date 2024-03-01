@@ -15,7 +15,8 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] private Vector3 boxSize;
     [SerializeField] private float castFrequency;
     [SerializeField] private float yOffset;
-
+    [SerializeField] private bool shouldKillSpider;
+    private EnemyAI spider;
     private Vector3 center; 
     private float timeSinceLastCast;
     #endregion
@@ -72,6 +73,22 @@ public class PressurePlate : MonoBehaviour
             {
                 // Collider's layer is included in the heavyEnough layer mask
                 weight++;
+
+                // Check if the plate should kill the spider.
+                if (shouldKillSpider)
+                {
+                    GameObject coll = collider.gameObject;
+
+                    if (coll.CompareTag("Enemy"))
+                    {
+                        spider = coll.GetComponent<EnemyAI>();
+
+                        if (spider != null && spider.hasTripped)
+                        {
+                            Destroy(spider);
+                        }
+                    }
+                }
             }
         }
 

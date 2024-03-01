@@ -3003,9 +3003,10 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
-  range: 20
+  range: 35
   minDistance: 5
   tripTime: 5
+  hasTripped: 0
 --- !u!1 &7207465824771637751
 GameObject:
   m_ObjectHideFlags: 0

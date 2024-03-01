@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
         // If the stickGFX is not active, set it active.
         if (!stickGFX.activeSelf) stickGFX.SetActive(true);
         if (prompt.activeSelf) prompt.SetActive(false);
-        
+
         UpdateUI();
     }
 
@@ -142,3 +142,4 @@ public class PlayerController : MonoBehaviour
         UpdateUI();
     }
 }
+

@@ -34,7 +34,7 @@ public class EnemyAI : MonoBehaviour
     #region Tripping
     [Header("Tripping")]
     [SerializeField] private float tripTime;
-    private bool hasTripped;
+    [HideInInspector] public bool hasTripped;
     #endregion
 
     #region Distance Tracking
@@ -53,7 +53,6 @@ public class EnemyAI : MonoBehaviour
     {
         if (!hasTripped)
         {
-            Debug.Log("Update is running");
             #region Setup
             // Check if the player has entered the range of the enemy. This Range is calculated from its defaultPos
             playerInRange = Physics.CheckSphere(defaultPos, range, playerLayer);
@@ -101,21 +100,18 @@ public class EnemyAI : MonoBehaviour
 
     private void Idle()
     {
-        Debug.Log("Idle");
         animator.SetTrigger("Idle");
         agent.SetDestination(transform.position);
     }
 
     private  void Follow()
     {
-        Debug.Log("Follow");
         animator.SetTrigger("Walk");
         agent.SetDestination(player.position);
     }
 
     private void Return()
     {
-        Debug.Log("Return");
         animator.SetTrigger("Walk");
         agent.SetDestination(defaultPos);
     }
