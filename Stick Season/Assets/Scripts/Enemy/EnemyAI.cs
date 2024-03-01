@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    #region Enum
     public enum EnemyState
     {
         Idle,
@@ -10,23 +12,35 @@ public class EnemyAI : MonoBehaviour
         Return
     }
 
+    public EnemyState currentState;
+    #endregion
+
+    #region References
     [Header("References")]
+    [SerializeField] private Animator animator;
     [SerializeField] private Transform player;
-    [SerializeField] private LayerMask whatIsGround, whatIsPlayer;
+    [SerializeField] private LayerMask playerLayer;
     private NavMeshAgent agent;
     private Vector3 defaultPos;
+    #endregion
 
+    #region Chasing
     [Header("Chasing")]
     [SerializeField] private float range;
-    [SerializeField] private bool playerInRange;
+    [SerializeField] private float minDistance;
+    private bool playerInRange;
+    #endregion
 
-    public float privacy;
+    #region Tripping
+    [Header("Tripping")]
+    [SerializeField] private float tripTime;
+    private bool hasTripped;
+    #endregion
 
     #region Distance Tracking
     private Vector3 distanceToDefault;
     private Vector3 distanceToPlayer;
     #endregion
-
 
     private void Awake()
     {
@@ -37,25 +51,42 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        // Check if the player has entered the range of the enemy. This Range is calculated from its defaultPos
-        playerInRange = Physics.CheckSphere(defaultPos, range, whatIsPlayer);
+        if (!hasTripped)
+        {
+            Debug.Log("Update is running");
+            #region Setup
+            // Check if the player has entered the range of the enemy. This Range is calculated from its defaultPos
+            playerInRange = Physics.CheckSphere(defaultPos, range, playerLayer);
 
-        distanceToDefault = transform.position - defaultPos;
-        distanceToPlayer = player.position - transform.position;
+            distanceToDefault = transform.position - defaultPos;
+            distanceToPlayer = transform.position - player.position;
 
-        /* If the player is in range, the enemy starts to follow the player
-         * If the enemy is close to the default position, it sits idle
-         * If the enemy is not at the default position, it returns */
-        if (playerInRange && distanceToPlayer.magnitude > privacy) UpdateBehaviour(EnemyState.Follow);
-        if (distanceToDefault.magnitude < 0.1f) UpdateBehaviour(EnemyState.Idle);
-        if (!playerInRange && distanceToDefault.magnitude > 0.1f) UpdateBehaviour(EnemyState.Return);
+            float distanceToDefaultMagnitude = distanceToDefault.magnitude;
+            float distanceToPlayerMagnitude = distanceToPlayer.magnitude;
+            #endregion
+
+            #region Decision Making
+            /* If the enemy is close to the starting point, they should idle.
+             * If the player is out of range and the enemy is not at the starting point, they should return
+             * If the player is in range and the enemy is not yet too close, they should follow
+             * If the player is in range but the enemy is too close, they should idle */
+
+            if (!playerInRange && distanceToDefaultMagnitude < 0.1f) UpdateBehaviour(EnemyState.Idle);
+            if (!playerInRange && distanceToDefaultMagnitude > 0.1f) UpdateBehaviour(EnemyState.Return);
+            if (playerInRange && distanceToPlayerMagnitude > minDistance) UpdateBehaviour(EnemyState.Follow);
+            if (playerInRange && distanceToPlayerMagnitude < minDistance) UpdateBehaviour(EnemyState.Idle);
+            #endregion
+        }
     }
 
     private void UpdateBehaviour(EnemyState state)
     {
-        switch (state)
+        currentState = state;
+
+        switch (currentState)
         {
             case EnemyState.Idle:
+                Idle();
                 break;
 
             case EnemyState.Follow:
@@ -70,18 +101,22 @@ public class EnemyAI : MonoBehaviour
 
     private void Idle()
     {
-        Debug.Log("The enemy is idle");
+        Debug.Log("Idle");
+        animator.SetTrigger("Idle");
+        agent.SetDestination(transform.position);
     }
 
-    private void Follow()
+    private  void Follow()
     {
-        Debug.Log("The player will be chased");
+        Debug.Log("Follow");
+        animator.SetTrigger("Walk");
         agent.SetDestination(player.position);
     }
 
     private void Return()
     {
-        Debug.Log("The agent will return");
+        Debug.Log("Return");
+        animator.SetTrigger("Walk");
         agent.SetDestination(defaultPos);
     }
 
@@ -91,6 +126,21 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(defaultPos, range);
     }
 
+    public void Trip()
+    {
+        if (!hasTripped)
+        {
+            agent.SetDestination(transform.position);
+            StartCoroutine(TripTimer());
+            hasTripped = true;
+        }
+    }
 
-
+    private IEnumerator TripTimer()
+    {
+        animator.SetTrigger("Tripped");
+        yield return new WaitForSeconds(tripTime);
+        hasTripped = false;
+        Idle();
+    }
 }

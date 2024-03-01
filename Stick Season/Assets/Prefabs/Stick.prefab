@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8655656440113502614}
   - component: {fileID: 2592465136430178702}
   - component: {fileID: 8436232030941590434}
-  - component: {fileID: 7247611628889926645}
+  - component: {fileID: 5044148769243063965}
   m_Layer: 11
   m_Name: Stick
   m_TagString: Stick
@@ -82,11 +82,11 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Height: 1.2
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7247611628889926645
+--- !u!114 &5044148769243063965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 820082841662073848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5482c5a54a390f3498c3bb8383929003, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b370756fccd4f043879b1f2c24efddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &824239611525178958
@@ -108,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8237079459744333598}
   - component: {fileID: 8723257762645345294}
+  - component: {fileID: 8276773212969465903}
   m_Layer: 0
   m_Name: 'Trigger '
   m_TagString: Untagged
@@ -151,6 +152,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8276773212969465903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824239611525178958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5482c5a54a390f3498c3bb8383929003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4152207301699405865
 PrefabInstance:
   m_ObjectHideFlags: 0
