@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
@@ -8,6 +7,7 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] private LayerMask heavyEnough;
 
     [HideInInspector] public bool isTriggered;
+    private bool finished;
     #endregion
 
     #region BoxCast Variables
@@ -24,7 +24,7 @@ public class PressurePlate : MonoBehaviour
     #region UI
     [Header("UI")]
     [SerializeField] private GameObject weightTemplate;
-    [SerializeField] private string weightType;
+    public string weightType;
 
     private WeightUI weightUI;
     #endregion
@@ -44,17 +44,20 @@ public class PressurePlate : MonoBehaviour
 
     private void Update()
     {
-        // Increment timeSinceLastCast
-        timeSinceLastCast += Time.deltaTime;
-
-        // Check if it's time to cast the box again
-        if (timeSinceLastCast >= 1f / castFrequency)
+        if (!finished)
         {
-            // Reset timeSinceLastCast
-            timeSinceLastCast = 0f;
+            // Increment timeSinceLastCast
+            timeSinceLastCast += Time.deltaTime;
 
-            // Cast the box
-            CastBox();
+            // Check if it's time to cast the box again
+            if (timeSinceLastCast >= 1f / castFrequency)
+            {
+                // Reset timeSinceLastCast
+                timeSinceLastCast = 0f;
+
+                // Cast the box
+                CastBox();
+            }
         }
     }
 
@@ -112,6 +115,13 @@ public class PressurePlate : MonoBehaviour
 
         weightUI = weightTemplate.GetComponent<WeightUI>(); 
         weightUI.weightText.text = weightType;
+    }
+
+    public void ActivatePlate()
+    {
+        finished = true;
+        isTriggered = true;
+        flame.SetActive(isTriggered);
     }
 
     private void OnDrawGizmos()

@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
 
     public void CompletedLevel1()
     {
+        OpenCurrentTutorial();
+
         int sticks = 1;
 
         // Make sure the player has only two sticks for the next level.

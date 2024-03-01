@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DoorSystem : MonoBehaviour
 {
-    #region DoorSystem
+    #region Door System
     [SerializeField] private PressurePlate[] pressurePlates;
 
     [HideInInspector] public int counter = 0;
