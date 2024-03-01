@@ -33,12 +33,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private TextMeshProUGUI stickTextUI;
-    [SerializeField] private int sticksInInventory = 0;
-
+ 
     [HideInInspector] public GameObject stickToDestroy;
     [HideInInspector] public bool inRangeOfStick;
 
     public GameObject prompt;
+    public int sticksInInventory = 0;
     #endregion
 
     private void Awake()

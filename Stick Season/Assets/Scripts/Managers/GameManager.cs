@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     #region Tutorial
     [SerializeField] private GameObject[] tutorials;
@@ -9,15 +9,17 @@ public class TutorialManager : MonoBehaviour
     private bool tutorialOpen;
     #endregion
 
+    [SerializeField] private DoorSystem[] doors;
+    private int doorCounter = 0;
+
     [Header("References")]
     [SerializeField] private GameObject stickInfo;
     [SerializeField] private GameObject tutorialStick;
-    [SerializeField] private DoorSystem doorSystem;
     [SerializeField] private PlayerController player;
 
     private void Awake()
     {
-        foreach (GameObject tutorial in tutorials) 
+        foreach (GameObject tutorial in tutorials)
         {
             tutorial.SetActive(false);
         }
@@ -28,7 +30,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Update()
     {
-        if (tutorialOpen && Input.GetKeyDown(KeyCode.Escape))
+        if (tutorialOpen && Input.GetKeyDown(KeyCode.Space))
         {
             CloseCurrentTutorial();
         }
@@ -69,14 +71,33 @@ public class TutorialManager : MonoBehaviour
         stickInfo.SetActive(true);
     }
 
-    public void AfterDoor()
+    public void CompletedLevel0()
     {
-        // Give the player a new stick and close the door behind him
+        // Give the player two new sticks and close the door behind him
         OpenCurrentTutorial();
 
-        player.AddSticks(1);
+        player.AddSticks(2);
 
-        doorSystem.ForceCloseDoor();
+        DoorSystem currentDoor = doors[doorCounter];
+        currentDoor.ForceCloseDoor();
+        doorCounter++;
+    }
+
+    public void CompletedLevel1()
+    {
+        int sticks = 1;
+
+        // Make sure the player has only two sticks for the next level.
+        if (player.sticksInInventory == 1)
+        {
+            sticks--;
+        }
+
+        player.AddSticks(sticks);
+
+        DoorSystem currentDoor = doors[doorCounter];
+        currentDoor.ForceCloseDoor();
+        doorCounter++;
     }
 
     #endregion

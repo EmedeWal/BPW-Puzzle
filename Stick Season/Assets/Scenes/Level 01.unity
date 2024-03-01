@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20866681}
   m_Layer: 5
-  m_Name: ESC Prompt
+  m_Name: SPC Prompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1258,7 +1258,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'HIT
 
-    ESC'
+    SPC'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1661,7 +1661,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 507157235}
-  - component: {fileID: 507157236}
+  - component: {fileID: 507157237}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1685,7 +1685,7 @@ Transform:
   - {fileID: 337826473}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &507157236
+--- !u!114 &507157237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1694,16 +1694,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 507157234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb28397a3f5e6554e9f69fc4b98b94b4, type: 3}
+  m_Script: {fileID: 11500000, guid: e125de6dea06e714baef03ad2b696ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tutorials:
   - {fileID: 1902161659}
   - {fileID: 1899777644}
   - {fileID: 1073906469}
+  doors:
+  - {fileID: 1724419391}
+  - {fileID: 1594772506}
   stickInfo: {fileID: 1876348738}
   tutorialStick: {fileID: 1974908290}
-  doorSystem: {fileID: 1724419391}
   player: {fileID: 1817352163}
 --- !u!1001 &515738906
 PrefabInstance:
@@ -2465,7 +2467,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'HIT
 
-    ESC'
+    SPC'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2997,7 +2999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892646438}
   m_Layer: 5
-  m_Name: ESC Prompt
+  m_Name: SPC Prompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3426,8 +3428,8 @@ MonoBehaviour:
   trigger:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 507157236}
-        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+      - m_Target: {fileID: 507157237}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: AfterDoor
         m_Mode: 1
         m_Arguments:
@@ -4942,7 +4944,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1484117653}
   m_Layer: 5
-  m_Name: ESC Prompt
+  m_Name: SPC Prompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5094,7 +5096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5736897422974412059, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
       propertyPath: m_Name
-      value: Door
+      value: Door 0
       objectReference: {fileID: 0}
     - target: {fileID: 8855693880059828816, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
       propertyPath: flamePillars.Array.size
@@ -5188,6 +5190,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4745421109564126134, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
   m_PrefabInstance: {fileID: 2033140221}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1594772506 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8855693880059828816, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
+  m_PrefabInstance: {fileID: 2033140221}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb32a27020ebd6e43aae9b6472ca8b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1596864357
 GameObject:
   m_ObjectHideFlags: 0
@@ -5435,7 +5448,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'HIT
 
-    ESC'
+    SPC'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6541,8 +6554,8 @@ MonoBehaviour:
   trigger:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 507157236}
-        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+      - m_Target: {fileID: 507157237}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: TriedDoor
         m_Mode: 1
         m_Arguments:
@@ -6766,8 +6779,8 @@ MonoBehaviour:
   tutorialStick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 507157236}
-        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+      - m_Target: {fileID: 507157237}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: TutorialStick
         m_Mode: 1
         m_Arguments:
@@ -6981,7 +6994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5736897422974412059, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
       propertyPath: m_Name
-      value: Door
+      value: Door 1
       objectReference: {fileID: 0}
     - target: {fileID: 8855693880059828816, guid: ad9b980d3cddecb46b78edc5ba12f47e, type: 3}
       propertyPath: pressurePlates.Array.size
