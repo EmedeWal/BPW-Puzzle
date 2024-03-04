@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask playerLayer;
+
     private NavMeshAgent agent;
     private Vector3 defaultPos;
     #endregion

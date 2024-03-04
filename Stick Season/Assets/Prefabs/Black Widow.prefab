@@ -3003,7 +3003,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
-  range: 35
+  range: 20
   minDistance: 5
   tripTime: 5
   hasTripped: 0

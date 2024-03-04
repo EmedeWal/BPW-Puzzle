@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,13 +10,26 @@ public class GameManager : MonoBehaviour
     private bool tutorialOpen;
     #endregion
 
+    #region Doors
     [SerializeField] private DoorSystem[] doors;
-    private int doorCounter = 0;
 
+    private int doorCounter = 0;
+    #endregion
+
+    #region Spawn Points
+    [SerializeField] private Transform[] spawnPoints;
+
+    private static int spawnPointCounter;
+    #endregion
+
+    #region References
     [Header("References")]
-    [SerializeField] private GameObject stickInfo;
     [SerializeField] private GameObject tutorialStick;
-    [SerializeField] private PlayerController player;
+    [SerializeField] private GameObject stickInfo;
+    [SerializeField] private GameObject player;
+
+    private PlayerController playerController;
+    #endregion
 
     private void Awake()
     {
@@ -24,8 +38,18 @@ public class GameManager : MonoBehaviour
             tutorial.SetActive(false);
         }
 
-        stickInfo.SetActive(false);
         tutorialStick.SetActive(false);
+
+        // Get the current spawn point based on the spawnPointCounter
+        Transform currentSpawnPoint = spawnPoints[spawnPointCounter];
+
+        Debug.Log("Player spawned at Spawn Point " + spawnPointCounter);
+
+        // Set the player's position and rotation to the current spawn point
+        player.transform.position = currentSpawnPoint.position;
+        player.transform.rotation = currentSpawnPoint.rotation;
+
+        playerController = player.GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -41,7 +65,7 @@ public class GameManager : MonoBehaviour
         if (tCounter < tutorials.Length)
         {
             tutorialOpen = true;
-            player.canMove = false;
+            playerController.canMove = false;
             tutorials[tCounter].gameObject.SetActive(true);
         }
     }
@@ -49,7 +73,7 @@ public class GameManager : MonoBehaviour
     private void CloseCurrentTutorial()
     {
         tutorialOpen = false;
-        player.canMove = true;
+        playerController.canMove = true;
         tutorials[tCounter].gameObject.SetActive(false);
         tCounter++;
     }
@@ -68,6 +92,8 @@ public class GameManager : MonoBehaviour
         // Activate relevant game object after the player has approached the stick
         OpenCurrentTutorial();
 
+        PlayerController.stickInfoActive = true;
+
         stickInfo.SetActive(true);
     }
 
@@ -76,11 +102,15 @@ public class GameManager : MonoBehaviour
         // Give the player two new sticks and close the door behind him
         OpenCurrentTutorial();
 
-        player.AddSticks(2);
+        playerController.AddSticks(2);
 
         DoorSystem currentDoor = doors[doorCounter];
         currentDoor.ForceCloseDoor();
         doorCounter++;
+
+        spawnPointCounter++;
+
+
     }
 
     public void CompletedLevel1()
@@ -90,17 +120,25 @@ public class GameManager : MonoBehaviour
         int sticks = 1;
 
         // Make sure the player has only two sticks for the next level.
-        if (player.sticksInInventory == 1)
+        if (playerController.sticksInInventory == 1)
         {
             sticks--;
         }
 
-        player.AddSticks(sticks);
+        playerController.AddSticks(sticks);
 
         DoorSystem currentDoor = doors[doorCounter];
         currentDoor.ForceCloseDoor();
         doorCounter++;
+
+        spawnPointCounter++;
     }
 
+    public void CompletedLevel2()
+    {
+        spawnPointCounter = 0;
+
+        SceneManager.LoadScene("End Screen");
+    }
     #endregion
 }

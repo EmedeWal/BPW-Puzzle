@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Sacrifice : MonoBehaviour
 {
+    [SerializeField] private TrapSystem trapSystem;
     [SerializeField] private Vector3 boxSize;
 
     private void OnDestroy()
@@ -18,6 +19,8 @@ public class Sacrifice : MonoBehaviour
                 if (plate.weightType == "blood")
                 {
                     plate.ActivatePlate();
+
+                    trapSystem.ResetTrap();
                 }
             }
         }

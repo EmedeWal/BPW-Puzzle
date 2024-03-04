@@ -28,22 +28,32 @@ public class PlayerController : MonoBehaviour
 
     #region Stick Variables
     [Header("Stick References")]
-    [SerializeField] private KeyCode interaction;
-    [SerializeField] private GameObject stickGFX;
-    [SerializeField] private GameObject stickPrefab;
-    [SerializeField] private Transform spawnPoint;
     [SerializeField] private TextMeshProUGUI stickTextUI;
- 
-    [HideInInspector] public GameObject stickToDestroy;
-    [HideInInspector] public bool inRangeOfStick;
+    [SerializeField] private GameObject stickPrefab;
+    [SerializeField] private GameObject stickInfo;
+    [SerializeField] private GameObject stickGFX;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private KeyCode interaction;
 
-    public GameObject prompt;
-    public int sticksInInventory = 0;
+    [HideInInspector] public static bool stickInfoActive;
+
+    [HideInInspector] public GameObject stickToDestroy;
+    [HideInInspector] public GameObject prompt;
+    [HideInInspector] public int sticksInInventory = 0;
+    [HideInInspector] public bool inRangeOfStick;
+    #endregion
+
+    #region Menu
+    [Header("Menu")]
+    [SerializeField] private GameObject menu;
+
+    private Menu menuScript;
     #endregion
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        menuScript = menu.GetComponent<Menu>();
     }
 
     private void Start()
@@ -52,6 +62,9 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         prompt.SetActive(false);
+        menu.SetActive(false);
+
+        stickInfo.SetActive(stickInfoActive);
 
         UpdateUI();
     }
@@ -64,6 +77,8 @@ public class PlayerController : MonoBehaviour
             RotateCamera();
 
             StickInput();
+
+            OpenMenu();
         }
     }
 
@@ -128,6 +143,34 @@ public class PlayerController : MonoBehaviour
         if (sticksInInventory == 0) stickGFX.SetActive(false);
 
         UpdateUI();
+    }
+
+    private void OpenMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!menuScript.menuOpen)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                menu.SetActive(true);
+                menuScript.menuOpen = true;
+
+                canMove = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+                menu.SetActive(false);
+                menuScript.menuOpen = false;
+
+                canMove = true;
+            }
+        }
+        
     }
 
     private void UpdateUI()

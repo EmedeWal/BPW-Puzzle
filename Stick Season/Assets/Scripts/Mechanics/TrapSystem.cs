@@ -92,10 +92,10 @@ public class TrapSystem : MonoBehaviour
         yield return new WaitForSeconds(resetDuration);
 
         // Reset the position back to default
-        StartCoroutine(Ascend());
+        StartCoroutine(Ascend(false));
     }
 
-    private IEnumerator Ascend()
+    private IEnumerator Ascend(bool destroy)
     {
         Debug.Log("Reset the position");
 
@@ -114,5 +114,15 @@ public class TrapSystem : MonoBehaviour
         yield return new WaitForSeconds(resetDuration);
 
         active = false;
+
+        if (destroy)
+        {
+            Destroy(this);
+        }
+    }
+
+    public void ResetTrap()
+    {
+        StartCoroutine(Ascend(true));
     }
 }
